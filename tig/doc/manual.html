@@ -1,0 +1,1463 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>Manual · Tig - Text-mode interface for Git</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="tigrc.5.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../INSTALL.html">
+            
+                <a href="../INSTALL.html">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../NEWS.html">
+            
+                <a href="../NEWS.html">
+            
+                    
+                    Release notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="screenshots.html">
+            
+                <a href="screenshots.html">
+            
+                    
+                    Screenshots
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="tig.1.html">
+            
+                <a href="tig.1.html">
+            
+                    
+                    tig(1)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="tigrc.5.html">
+            
+                <a href="tigrc.5.html">
+            
+                    
+                    tigrc(5)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7" data-path="manual.html">
+            
+                <a href="manual.html">
+            
+                    
+                    Manual
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Manual</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="the-tig-manual">The Tig Manual</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the manual for Tig, the ncurses-based text-mode interface for git.
+Tig allows you to browse changes in a Git repository and can additionally act
+as a pager for output of various Git commands. When used as a pager, it will
+display input from stdin and colorize it.</p>
+</div>
+<div class="paragraph">
+<p>When browsing repositories, Tig uses the underlying Git commands to present
+the user with various views, such as summarized commit log and showing the
+commit with the log message, diffstat, and the diff.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="calling-conventions">Calling Conventions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="pager-mode">Pager Mode</h3>
+<div class="paragraph">
+<p>If stdin is a pipe, any log or diff options will be ignored and the pager view
+will be opened loading data from stdin. The pager mode can be used for
+colorizing output from various Git commands.</p>
+</div>
+<div class="paragraph">
+<p>Example on how to colorize the output of git-show(1):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git show | tig</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cmd-options">Git Command Options</h3>
+<div class="paragraph">
+<p>All Git command options specified on the command line will be passed to the
+given command and all will be shell quoted before they are passed to the
+shell.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If you specify options for the main view, you should not use the
+<code>--pretty</code> option as this option will be set automatically to the format
+expected by the main view.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Example on how to view a commit and show both author and committer
+information:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig show --pretty=fuller</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the section on <a href="#refspec">specifying revisions</a> for an introduction to
+revision options supported by the Git commands. For details on specific Git
+command options, refer to the man page of the command in question.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="viewer">The Viewer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The display consists of a status window on the last line of the screen and one
+or more views. The default is to only show one view at a time but it is
+possible to split both the main and log view to also show the commit diff.</p>
+</div>
+<div class="paragraph">
+<p>If you are in the log view and press <em>Enter</em> when the current line is a commit
+line, such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>commit 4d55caff4cc89335192f3e566004b4ceef572521</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will split the view so that the log view is displayed in the top window
+and the diff view in the bottom window. You can switch between the two views
+by pressing <em>Tab</em>. To maximize the log view again, simply press <em>l</em>.</p>
+</div>
+<div class="sect2">
+<h3 id="views">Views</h3>
+<div class="paragraph">
+<p>Various <em>views</em> of a repository are presented. Each view is based on output
+from an external command, most often <em>git log</em>, <em>git diff</em>, or <em>git show</em>.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">The main view</dt>
+<dd>
+<p>Is the default view, and it shows a one line summary of each commit
+in the chosen list of revisions. The summary includes author date,
+author, and the first line of the log message. Additionally, any
+repository references, such as tags, will be shown.</p>
+</dd>
+<dt class="hdlist1">The log view</dt>
+<dd>
+<p>Presents a more rich view of the revision log showing the whole log
+message and the diffstat.</p>
+</dd>
+<dt class="hdlist1">The diff view</dt>
+<dd>
+<p>Shows either the diff of the current working tree, that is, what
+has changed since the last commit, or the commit diff complete
+with log message, diffstat and diff.</p>
+</dd>
+<dt class="hdlist1">The tree view</dt>
+<dd>
+<p>Lists directory trees associated with the current revision allowing
+subdirectories to be descended or ascended and file blobs to be
+viewed.</p>
+</dd>
+<dt class="hdlist1">The blob view</dt>
+<dd>
+<p>Displays the file content or &quot;blob&quot; of data associated with a file
+name.</p>
+</dd>
+<dt class="hdlist1">The blame view</dt>
+<dd>
+<p>Displays the file content annotated or blamed by commits.</p>
+</dd>
+<dt class="hdlist1">The refs view</dt>
+<dd>
+<p>Displays the branches, remotes and tags in the repository.</p>
+</dd>
+<dt class="hdlist1">The status view</dt>
+<dd>
+<p>Displays status of files in the working tree and allows changes to be
+staged/unstaged as well as adding of untracked files.</p>
+</dd>
+<dt class="hdlist1">The stage view</dt>
+<dd>
+<p>Displays diff changes for staged or unstaged files being tracked or
+file content of untracked files.</p>
+</dd>
+<dt class="hdlist1">The stash view</dt>
+<dd>
+<p>Displays the list of stashes in the repository.</p>
+</dd>
+<dt class="hdlist1">The grep view</dt>
+<dd>
+<p>Displays a list of files and all the lines that matches a search
+pattern.</p>
+</dd>
+<dt class="hdlist1">The pager view</dt>
+<dd>
+<p>Is used for displaying both input from stdin and output from Git
+commands entered in the internal prompt.</p>
+</dd>
+<dt class="hdlist1">The help view</dt>
+<dd>
+<p>Displays a quick reference of key bindings.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="commit-id">Browsing State and User-defined Commands</h3>
+<div class="paragraph">
+<p>The viewer keeps track of both what head and commit ID you are currently
+viewing. The commit ID will follow the cursor line and change every time you
+highlight a different commit. Whenever you reopen the diff view it will be
+reloaded, if the commit ID changed. The head ID is used when opening the main
+and log view to indicate from what revision to show history.</p>
+</div>
+<div class="paragraph">
+<p>Some of the commands used or provided by Tig can be configured. This goes for
+some of the <a href="#env-variables">environment variables</a> as well as the
+<a href="#external-commands">external commands</a>. These user-defined commands can use
+arguments that refer to the current browsing state by using one of the
+following variables.</p>
+</div>
+<table class="tableblock frame-none grid-none spread">
+<caption class="title">Table 1. Browsing state variables</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(head)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently viewed <em>head</em> ID. Defaults to HEAD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(commit)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected commit ID.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(blob)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected blob ID.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(branch)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected branch name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(remote)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected remote name. For remote
+			 branches %(branch) will contain the branch name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(tag)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected tag name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(stash)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected stash name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(directory)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The current directory path in the tree view or
+			 &quot;.&quot; if undefined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(file)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(lineno)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected line number. Defaults to 0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(ref)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The reference given to blame or HEAD if undefined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(revargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The revision arguments passed on the command line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(fileargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The file arguments passed on the command line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(cmdlineargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All other options passed on the command line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(diffargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>diff-options</em> or <em>TIG_DIFF_OPTS</em> used
+			 used by the diff view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(blameargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>blame-options</em> used by the blame view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(logargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>log-options</em> used by the log view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(mainargs)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>main-options</em> used by the main view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(prompt)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prompt for the argument value. Optionally specify a
+			 custom prompt using <code>&quot;%(prompt Enter branch name: )&quot;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(text)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The text of the currently selected line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:head)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the checked out branch, e.g. <code>master</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:head-id)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The commit ID of the checked out branch.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:remote)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The remote associated with the checked out branch,
+			 e.g. <code>origin/master</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:cdup)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path to change directory to the repository root,
+			 e.g. <code>../</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:prefix)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path prefix of the current work directory,
+			 e.g <code>subdir/</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:git-dir)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path to the Git directory, e.g. <code>/src/repo/.git</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:is-inside-work-tree)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether Tig is running inside a work tree,
+			 either <code>true</code> or <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example user-defined commands:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allow to amend the last commit:</p>
+<div class="literalblock">
+<div class="content">
+<pre>bind generic + !git commit --amend</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Copy commit ID to clipboard:</p>
+<div class="literalblock">
+<div class="content">
+<pre>bind generic 9 !@sh -c &quot;echo -n %(commit) | xclip -selection c&quot;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add/edit notes for the current commit used during a review:</p>
+<div class="literalblock">
+<div class="content">
+<pre>bind generic T !git notes edit %(commit)</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Enter Git&#x2019;s interactive add for fine-grained staging of file content:</p>
+<div class="literalblock">
+<div class="content">
+<pre>bind generic I !git add -i %(file)</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Rebase current branch on top of the selected branch:</p>
+<div class="literalblock">
+<div class="content">
+<pre>bind refs 3 !git rebase -i %(branch)</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="title-window">Title Windows</h3>
+<div class="paragraph">
+<p>Each view has a title window which shows the name of the view, current commit
+ID if available, and where the view is positioned:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[main] c622eefaa485995320bc743431bae0d497b1d875 - commit 1 of 61 (1%)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, the title of the current view is highlighted using bold font.  For
+long loading views (taking over 3 seconds) the time since loading started will
+be appended:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[main] 77d9e40fbcea3238015aea403e06f61542df9a31 - commit 1 of 779 (0%) 5s</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="env-variables">Environment Variables</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Several options related to the interface with Git can be configured via
+environment options.</p>
+</div>
+<div class="sect2">
+<h3 id="configuration-files">Configuration Files</h3>
+<div class="paragraph">
+<p>Upon startup, Tig first reads the system wide configuration file
+(<code>{sysconfdir}/tigrc</code> by default) and then proceeds to read the user&#x2019;s
+configuration file (<code>~/.tigrc</code> by default). The paths to either of these files
+can be overridden through the following environment variables:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">TIGRC_USER</dt>
+<dd>
+<p>Path of the user configuration file.</p>
+</dd>
+<dt class="hdlist1">TIGRC_SYSTEM</dt>
+<dd>
+<p>Path of the system wide configuration file.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="repo-refs">Repository References</h3>
+<div class="paragraph">
+<p>Commits that are referenced by tags and branch heads will be marked by the
+reference name surrounded by <em>[</em> and <em>]</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2006-03-26 19:42 Petr Baudis         | [cogito-0.17.1] Cogito 0.17.1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to limit what branches are shown, say only show branches named
+<code>master</code> or those which start with the <code>feature/</code> prefix, you can do it by setting
+the following variable:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ TIG_LS_REMOTE=&quot;git ls-remote . master feature/*&quot; tig</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or set the variable permanently in your environment.</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">TIG_LS_REMOTE</dt>
+<dd>
+<p>Set command for retrieving all repository references. The command
+should output data in the same format as git-ls-remote(1). Defaults
+to:</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git ls-remote .</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="diff-options">Diff options</h3>
+<div class="paragraph">
+<p>It is possible to alter how diffs are shown by the diff view. If for example
+you prefer to have commit and author dates shown as relative dates, use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ TIG_DIFF_OPTS=&quot;--relative-date&quot; tig</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or set the variable permanently in your environment.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="keys">Default Keybindings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below the default key bindings are shown.</p>
+</div>
+<div class="sect2">
+<h3 id="view-switching">View Switching</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to main view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">d</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to diff view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">l</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to log view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">p</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to pager view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to (directory) tree view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to (file) blob view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">g</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to grep view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to blame view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">r</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to refs view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to stash view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">h</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to help view</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to status view</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to stage view</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="view-manipulation">View Manipulation</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">q</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Close view, if multiple views are open it will jump back to the
+	previous view in the view stack. If it is the last open view it
+	will quit. Use <em>Q</em> to quit all views at once.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This key is &quot;context sensitive&quot; depending on what view you are
+	currently in. When in log view on a commit line or in the main
+	view, split the view and show the commit diff. In the diff view
+	pressing Enter will simply scroll the view one line down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tab</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switch to next view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reload and refresh the current view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximize the current view to fill the whole display.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Up</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This key is &quot;context sensitive&quot; and will move the cursor one
+	line up. However, if you opened a diff view from the main view
+	(split- or full-screen) it will change the cursor to point to
+	the previous commit in the main view and update the diff view
+	to display it. If you prefer this key to move the cursor or
+	scroll within the diff view instead, use <code>bind diff &lt;Up&gt; move-up</code>
+	or <code>bind diff &lt;Up&gt; scroll-line-up</code>, respectively.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Down</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to <em>Up</em> but will move down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">,</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move to parent. In the tree view, this means switch to the parent
+	directory. In the blame view it will load blame for the parent
+	commit. For merges the parent is queried.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="view-actions">View Specific Actions</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">u</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update status of file. In the status view, this allows you to add an
+	 untracked file or stage changes to a file for next commit (similar to
+	 running git-add &lt;filename&gt;). In the stage view, when pressing this on
+	 a diff chunk line stages only that chunk for next commit, when not on
+	 a diff chunk line all changes in the displayed diff are staged.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resolve unmerged file by launching git-mergetool(1). Note, to work
+	 correctly this might require some initial configuration of your
+	 preferred merge tool. See the manpage of git-mergetool(1).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">!</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checkout file with unstaged changes. This will reset the file to
+	 contain the content it had at last commit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stage single diff line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move to next chunk in the stage view.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Increase the diff context.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decrease the diff context.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="cursor-nav">Cursor Navigation</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">k</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one line up.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">j</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one line down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PgUp,-,a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page up.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PgDown, Space</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">End</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to last line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Home</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to first line.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="view-scrolling">Scrolling</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one line up.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one line down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ScrBack</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one page up.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ScrFwd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one page down.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Left</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one column left.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Right</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one column right.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">|</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view to the first column.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="searching">Searching</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search the view. Opens a prompt for entering search regexp to use.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search backwards in the view. Also prompts for regexp.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">n</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find next match for the current search regexp.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find previous match for the current search regexp.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="misc-keys">Misc</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;C-L&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redraw screen.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stop all background loading. This can be useful if you use
+	 Tig in a repository with a long history without limiting
+	 the revision log.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show version.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">o</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open option menu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">#</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle line numbers on/off.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle date display on/off/relative/relative-compact/custom</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle author display on/off/abbreviated/email/email user name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">G</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle revision graph visualization on/off.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">~</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle (line) graphics mode</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">F</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle reference display on/off (tag and branch names).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle ignoring whitespace on/off for diffs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle commit ID display on/off</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle file filtering in order to see the full diff instead of only
+	 the diff concerning the currently selected file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Toggle highlighting of commit title overflow.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open prompt. This allows you to specify what command to run.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">e</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open file in editor.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="prompt">Prompt</h3>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:&lt;number&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to the specific line number, e.g. <code>:80</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:&lt;sha&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to a specific commit, e.g. <code>:2f12bcc</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:&lt;x&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute the corresponding key binding, e.g. <code>:q</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:!&lt;command&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute a system command in a pager, e.g. <code>:!git log -p</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:&lt;action&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute a Tig command, e.g. <code>:edit</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:goto &lt;rev&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to a specific revision, e.g. <code>:goto %(commit)^2</code>
+			 to goto the current commit&#x2019;s 2nd parent or
+			 <code>:goto some/branch</code> to goto the commit denoting the
+			 branch <code>some/branch</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:save-display &lt;file&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save current display to <code>&lt;file&gt;</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:save-options &lt;file&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save current options to <code>&lt;file&gt;</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:script &lt;file&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute commands from <code>&lt;file&gt;</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:exec &lt;flags&gt;&lt;args&#x2026;&#x200B;&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute command using <code>&lt;args&gt;</code> with external
+			 user-defined command option flags defined in <code>&lt;flags&gt;</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="external-commands">External Commands</h3>
+<div class="paragraph">
+<p>For more custom needs, external commands provide a way to easily execute
+a script or program. They are bound to keys and use information from the
+current browsing state, such as the current commit ID. Tig comes with
+the following built-in external commands:</p>
+</div>
+<table class="tableblock frame-none grid-none spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Keymap</th>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">main</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">git cherry-pick %(commit)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">git commit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">generic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">G</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">git gc</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="refspec">Revision Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section describes various ways to specify what revisions to display or
+otherwise limit the view to. Tig does not itself parse the described
+revision options so refer to the relevant Git man pages for further
+information. Relevant man pages besides git-log(1) are git-diff(1) and
+git-rev-list(1).</p>
+</div>
+<div class="paragraph">
+<p>You can tune the interaction with Git by making use of the options explained
+in this section. For example, by configuring the environment variable
+described in the section on <a href="#diff-options">diff options</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="path-limiting">Limit by Path Name</h3>
+<div class="paragraph">
+<p>If you are interested only in those revisions that made changes to a specific
+file (or even several files) list the files like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig Makefile README</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To avoid ambiguity with Tig&#x2019;s subcommands or repository references such as tag
+names, be sure to separate file names from other Git options using &quot;<code>--</code>&quot;. So
+if you have a file named <em>status</em> it will clash with the <em>status</em> subcommand,
+and thus you will have to use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig -- status</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="date-number-limiting">Limit by Date or Number</h3>
+<div class="paragraph">
+<p>To speed up interaction with Git, you can limit the amount of commits to show
+both for the log and main view. Either limit by date using e.g.
+<code>--since=1.month</code> or limit by the number of commits using <code>-n400</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you are only interested in changes that happened between two dates you can
+use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig --after=&quot;May 5th&quot; --before=&quot;2006-05-16 15:44&quot;</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If you want to avoid having to quote dates containing spaces you can use
+&quot;.&quot; instead, e.g. <code>--after=May.5th</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="commit-range-limiting">Limiting by Commit Ranges</h3>
+<div class="paragraph">
+<p>Alternatively, commits can be limited to a specific range, such as &quot;all
+commits between <em>tag-1.0</em> and <em>tag-2.0</em>&quot;. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig tag-1.0..tag-2.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This way of commit limiting makes it trivial to only browse the commits which
+haven&#x2019;t been pushed to a remote branch. Assuming <em>origin</em> is your upstream
+remote branch, using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig origin..HEAD</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>will list what will be pushed to the remote branch. Optionally, the ending
+<em>HEAD</em> can be left out since it is implied.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="reachability-limiting">Limiting by Reachability</h3>
+<div class="paragraph">
+<p>Git interprets the range specifier &quot;tag-1.0..tag-2.0&quot; as &quot;all commits
+reachable from <em>tag-2.0</em> but not from <em>tag-1.0</em>&quot;.  Where reachability refers
+to what commits are ancestors (or part of the history) of the branch or tagged
+revision in question.</p>
+</div>
+<div class="paragraph">
+<p>If you prefer to specify which commit to preview in this way use the
+following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig tag-2.0 ^tag-1.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can think of <em>^</em> as a negation operator. Using this alternate syntax, it
+is possible to further prune commits by specifying multiple branch cut offs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="refspec-combi">Combining Revisions Specification</h3>
+<div class="paragraph">
+<p>Revision options can to some degree be combined, which makes it possible to
+say &quot;show at most 20 commits from within the last month that changed files
+under the Documentation/ directory.&quot;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig --since=1.month -n20 -- Documentation/</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="refspec-all">Examining All Repository References</h3>
+<div class="paragraph">
+<p>In some cases, it can be useful to query changes across all references in a
+repository. An example is to ask &quot;did any line of development in this
+repository change a particular file within the last week&quot;. This can be
+accomplished using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig --all --since=1.week -- Makefile</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_more_information">More Information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Please visit Tig&#x2019;s <a href="https://jonas.github.io/tig" target="_blank">home page</a> or
+<a href="https://github.com/jonas/tig" target="_blank">main Git repository</a> for information about
+new releases and how to report bugs and feature requests.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="copy-right">Copyright</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright (c) 2006-2014 Jonas Fonseca &lt;<a href="mailto:jonas.fonseca@gmail.com" target="_blank">jonas.fonseca@gmail.com</a>&gt;</p>
+</div>
+<div class="paragraph">
+<p>This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references">See Also</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Manpages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="tig.1.html">tig(1)</a></p>
+</li>
+<li>
+<p><a href="tigrc.5.html">tigrc(5)</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="tigrc.5.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: tigrc(5)">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Manual","level":"1.7","depth":1,"previous":{"title":"tigrc(5)","level":"1.6","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/manual.adoc","mtime":"2016-11-17T01:28:05.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2016-11-17T03:04:23.570Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

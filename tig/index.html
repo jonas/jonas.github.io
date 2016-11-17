@@ -1,0 +1,376 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>Introduction · Tig - Text-mode interface for Git</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="INSTALL.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter active" data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="INSTALL.html">
+            
+                <a href="INSTALL.html">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="NEWS.html">
+            
+                <a href="NEWS.html">
+            
+                    
+                    Release notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="doc/screenshots.html">
+            
+                <a href="doc/screenshots.html">
+            
+                    
+                    Screenshots
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="doc/tig.1.html">
+            
+                <a href="doc/tig.1.html">
+            
+                    
+                    tig(1)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="doc/tigrc.5.html">
+            
+                <a href="doc/tigrc.5.html">
+            
+                    
+                    tigrc(5)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="doc/manual.html">
+            
+                <a href="doc/manual.html">
+            
+                    
+                    Manual
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Introduction</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="tig-text-mode-interface-for-git">Tig: text-mode interface for Git</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><a class="image" href="http://travis-ci.org/jonas/tig" target="_blank"><img src="https://secure.travis-ci.org/jonas/tig.svg?branch=master" alt="Build Status"></a></span>
+<span class="image"><a class="image" href="https://gitter.im/jonas/tig?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge" target="_blank"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join Chat"></a></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_tig">What is Tig?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tig is an ncurses-based text-mode interface for git. It functions mainly
+as a Git repository browser, but can also assist in staging changes for
+commit at chunk level and act as a pager for output from various Git
+commands.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Homepage:	<a href="https://jonas.github.io/tig/" class="bare" target="_blank">https://jonas.github.io/tig/</a></p>
+</li>
+<li>
+<p>Manual:	<a href="https://jonas.github.io/manual.html" class="bare" target="_blank">https://jonas.github.io/manual.html</a></p>
+</li>
+<li>
+<p>Tarballs:	<a href="https://github.com/jonas/tig/releases" class="bare" target="_blank">https://github.com/jonas/tig/releases</a></p>
+</li>
+<li>
+<p>Git URL:	git://github.com/jonas/tig.git</p>
+</li>
+<li>
+<p>Gitter:	<a href="https://gitter.im/jonas/tig" class="bare" target="_blank">https://gitter.im/jonas/tig</a></p>
+</li>
+<li>
+<p>Q&amp;A:		<a href="http://stackoverflow.com/questions/tagged/tig" class="bare" target="_blank">http://stackoverflow.com/questions/tagged/tig</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bugs_and_feature_requests">Bugs and Feature Requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Bugs and feature requests can be reported using the
+<a href="https://github.com/jonas/tig/issues" target="_blank">issue tracker</a> or by mail to either
+the Git mailing list or directly to the maintainer. Ensure that the word
+&quot;tig&quot; is in the subject. For other Tig related questions please use
+Stack Overflow: <a href="http://stackoverflow.com/questions/tagged/tig" class="bare" target="_blank">http://stackoverflow.com/questions/tagged/tig</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_and_news">Installation and News</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Information on how to build and install Tig are found in
+<a href="INSTALL.html">the installation instructions</a>.</p>
+</div>
+<div class="paragraph">
+<p>News about releases and latest features and bug fixes are found in
+<a href="NEWS.html">the release notes</a>.</p>
+</div>
+</div>
+</div>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+                <a href="INSTALL.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Installation">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Installation","level":"1.2","depth":1,"path":"INSTALL.adoc","ref":"INSTALL.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"README.adoc","mtime":"2016-11-17T01:29:48.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2016-11-17T03:04:23.570Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
