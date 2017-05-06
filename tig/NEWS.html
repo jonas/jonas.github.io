@@ -227,8 +227,20 @@
                                 
                                 <h1 id="release-notes">Release notes</h1>
 <div class="sect1">
-<h2 id="_master">master</h2>
+<h2 id="_tig_2_2_2">tig-2.2.2</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Upgrade instructions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>status-untracked-dirs</code> option was renamed to
+<code>status-show-untracked-dirs</code> to match the new <code>status-show-untracked-files</code>
+option.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Improvements:</p>
 </div>
@@ -238,6 +250,21 @@
 <p>Use <code>diff-options</code> when preparing the diff in the stage view to make the diff
 state configurable. (GH #545)</p>
 </li>
+<li>
+<p>Add <em>status-show-untracked-files</em> option mirroring Git&#x2019;s
+<em>status.showUntrackedFiles</em> to toggle display of untracked files.  in the
+status view. On by default. (GH #562)</p>
+</li>
+<li>
+<p>Update <code>ax_with_curses.m4</code> and use <code>pkg-config</code> to detect. (GH #546)</p>
+</li>
+<li>
+<p>Add <code>tig-pick</code> script for using Tig as a commit picker. (GH #575, #580)</p>
+</li>
+<li>
+<p>Add &quot;smart case&quot; option (<em>set ignore-case = smart-case</em>) to ignore case when
+the search string is lower-case only. (GH #320, #579)</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -246,10 +273,32 @@ state configurable. (GH #545)</p>
 <div class="ulist">
 <ul>
 <li>
+<p>Fix author ident cache being keyed by email only. (GH #424, #526, #547)</p>
+</li>
+<li>
+<p>Fix periodic refresh mode to properly detect ref changes. (GH #430, #591)</p>
+</li>
+<li>
 <p>Add workaround for detecting failure to start the diff-highlight process.</p>
 </li>
 <li>
 <p>Show diffs in the stash view when <code>set mailmap = true</code>. (GH #556)</p>
+</li>
+<li>
+<p>Fix parsing of git-log revision arguments, such as <code>--exclude=...</code> in
+conjunction with <code>--all</code>. (GH #555)</p>
+</li>
+<li>
+<p>Fix diff stat parsing for binary copies.</p>
+</li>
+<li>
+<p>Fix crash when resizing terminal while search is in progress. (GH #515, #550)</p>
+</li>
+<li>
+<p>Fix argument filtering to pass more arguments through to Git.</p>
+</li>
+<li>
+<p>Check for termcap support in split tinfo libs. (GH #568, #585)</p>
 </li>
 </ul>
 </div>
@@ -2470,7 +2519,7 @@ by default.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Release notes","level":"1.3","depth":1,"next":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"previous":{"title":"Installation","level":"1.2","depth":1,"path":"INSTALL.adoc","ref":"INSTALL.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"NEWS.adoc","mtime":"2016-12-09T04:58:35.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2016-12-14T02:13:08.821Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Release notes","level":"1.3","depth":1,"next":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"previous":{"title":"Installation","level":"1.2","depth":1,"path":"INSTALL.adoc","ref":"INSTALL.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"NEWS.adoc","mtime":"2017-05-06T14:37:09.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2017-05-06T14:51:00.456Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
