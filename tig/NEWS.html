@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Release notes · Tig - Text-mode interface for Git</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Release notes · Tig - Text-mode interface for Git</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -180,6 +180,38 @@
             
         </li>
     
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Developer Documentation
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="test/">
+            
+                <a href="test/">
+            
+                    
+                    Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
 
     
 
@@ -226,6 +258,45 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="release-notes">Release notes</h1>
+<div class="sect1">
+<h2 id="_master">master</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Improvements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve the test suite portability to not depend on GNU sed. (GH #609, #614)</p>
+</li>
+<li>
+<p>Make build reproducible. (<a href="https://reproducible-builds.org/" class="bare" target="_blank">https://reproducible-builds.org/</a>) (GH #613)</p>
+</li>
+<li>
+<p>Add <code>view-close-no-quit</code> action, unbound by default. (GH #607)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Bug fixes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Handle hyphenated directory names when listing content. (GH #602)</p>
+</li>
+<li>
+<p>contrib/vim.tigrc: Also bind G in the main as a workaround for limitations of
+the <code>none</code> action. (GH #594, #599)</p>
+</li>
+<li>
+<p>Only override <code>blame-options</code> when commands are given and fix parsing of
+<code>-C</code>. (GH #597)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_tig_2_2_2">tig-2.2.2</h2>
 <div class="sectionbody">
@@ -2519,7 +2590,7 @@ by default.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Release notes","level":"1.3","depth":1,"next":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"previous":{"title":"Installation","level":"1.2","depth":1,"path":"INSTALL.adoc","ref":"INSTALL.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"NEWS.adoc","mtime":"2017-05-06T14:37:09.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2017-05-06T14:51:00.456Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Release notes","level":"1.3","depth":1,"next":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"previous":{"title":"Installation","level":"1.2","depth":1,"path":"INSTALL.adoc","ref":"INSTALL.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"NEWS.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

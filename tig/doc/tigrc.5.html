@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>tigrc(5) · Tig - Text-mode interface for Git</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>tigrc(5) · Tig - Text-mode interface for Git</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -177,6 +177,38 @@
                 </a>
             
 
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Developer Documentation
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../test/">
+            
+                <a href="../test/">
+            
+                    
+                    Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -527,7 +559,9 @@ default is <em>50%</em>.</p>
 <dd>
 <p>Whether to highlight diffs using Git&#x2019;s <em>diff-highlight</em> program. Defaults
 to false. When set to true then <em>diff-highlight</em> is used, else the option
-value is used as the path.</p>
+value is used as the path. When this option is in effect, highlighted
+regions are governed by <code>color diff-add-highlight</code> and
+<code>color diff-del-highlight</code>.</p>
 </dd>
 <dt class="hdlist1"><em>ignore-space</em> (mixed) [no|all|some|at-eol|&lt;bool&gt;]</dt>
 <dd>
@@ -583,6 +617,13 @@ itself support mouse events.</p>
 <dt class="hdlist1"><em>mouse-scroll</em> (int)</dt>
 <dd>
 <p>Interval to scroll up or down using the mouse. The default is 3 lines.
+Mouse support requires that ncurses itself support mouse events and that
+you have enabled mouse support in ~/.tigrc with <code>set mouse = true</code>.</p>
+</dd>
+<dt class="hdlist1"><em>mouse-wheel-cursor</em> (bool)</dt>
+<dd>
+<p>Whether to prefer moving the cursor to scrolling the view when using the
+mouse wheel. Off by default. Combines well with <code>set mouse-scroll = 1</code>.
 Mouse support requires that ncurses itself support mouse events and that
 you have enabled mouse support in ~/.tigrc with <code>set mouse = true</code>.</p>
 </dd>
@@ -876,10 +917,6 @@ automatically sized to fit the content.</p>
 <p><em>display</em> (mixed) [no|short|long|&lt;bool&gt;]: How to display the status
 label.</p>
 </li>
-<li>
-<p><em>width</em> (int): Width of the column. When set to zero, the width is
-automatically sized to fit the content.</p>
-</li>
 </ul>
 </div>
 </dd>
@@ -960,6 +997,10 @@ the keybindings for the <strong>generic</strong> keymap, and last the default ke
 Thus, the view keybindings override the generic keybindings which override the
 built-in keybindings.</p>
 </div>
+<div class="paragraph">
+<p>Keybindings at the line-entry prompt are typically governed by the readline
+library, and are configured separately in <code>~/.inputrc</code>.  See <em>readline(1)</em>.</p>
+</div>
 <div class="openblock">
 <div class="content">
 <div class="dlist">
@@ -985,8 +1026,9 @@ bind to the <code>&lt;</code> key.</p>
 <p><strong>&lt;Enter&gt;</strong>, <strong>&lt;Space&gt;</strong>, <strong>&lt;Backspace&gt;</strong>, <strong>&lt;Tab&gt;</strong>, <strong>&lt;Escape&gt;</strong> or <strong>&lt;Esc&gt;</strong>, <strong>&lt;Left&gt;</strong>,
 <strong>&lt;Right&gt;</strong>, <strong>&lt;Up&gt;</strong>, <strong>&lt;Down&gt;</strong>, <strong>&lt;Insert&gt;</strong> or <strong>&lt;Ins&gt;</strong>, <strong>&lt;Delete&gt;</strong> or <strong>&lt;Del&gt;</strong>,
 <strong>&lt;Hash&gt;</strong>, <strong>&lt;LessThan&gt;</strong> or <strong>&lt;LT&gt;</strong>, <strong>&lt;Home&gt;</strong>, <strong>&lt;End&gt;</strong>, <strong>&lt;PageUp&gt;</strong> or <strong>&lt;PgUp&gt;</strong>,
-<strong>&lt;PageDown&gt;</strong> or <strong>&lt;PgDown&gt;</strong>, <strong>&lt;F1&gt;</strong>, <strong>&lt;F2&gt;</strong>, <strong>&lt;F3&gt;</strong>, <strong>&lt;F4&gt;</strong>, <strong>&lt;F5&gt;</strong>, <strong>&lt;F6&gt;</strong>,
-<strong>&lt;F7&gt;</strong>, <strong>&lt;F8&gt;</strong>, <strong>&lt;F9&gt;</strong>, <strong>&lt;F10&gt;</strong>, <strong>&lt;F11&gt;</strong>, <strong>&lt;F12&gt;</strong>.</p>
+<strong>&lt;PageDown&gt;</strong> or <strong>&lt;PgDown&gt;</strong>, <strong>&lt;ScrollBack&gt;</strong> or <strong>&lt;SBack&gt;</strong>, <strong>&lt;ScrollFwd&gt;</strong> or
+<strong>&lt;SFwd&gt;</strong>, <strong>&lt;ShiftTab&gt;</strong> or <strong>&lt;BackTab&gt;</strong>, <strong>&lt;ShiftLeft&gt;</strong>, <strong>&lt;ShiftRight&gt;</strong>,
+<strong>&lt;ShiftDelete&gt;</strong> or <strong>&lt;ShiftDel&gt;</strong>, <strong>&lt;ShiftHome&gt;</strong>, <strong>&lt;ShiftEnd&gt;</strong>, <strong>&lt;F1&gt;</strong> &#x2026;&#x200B; <strong>&lt;F19&gt;</strong></p>
 </div>
 <div class="paragraph">
 <p>To define key mappings with the <code>Ctrl</code> key, use <code>&lt;Ctrl-key&gt;</code>. In addition, key
@@ -1001,16 +1043,38 @@ be bound using <code>&lt;Esc&gt;key</code>.</p>
 <pre>bind main R		refresh
 bind main &lt;Down&gt;	next
 bind main &lt;Ctrl-f&gt;	scroll-page-down
-bind main &lt;Esc&gt;o	options</pre>
+bind main &lt;Esc&gt;o	options
+bind main &lt;ShiftTab&gt;	parent</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that due to the way ncurses encodes <code>Ctrl</code> key mappings, <code>Ctrl-m</code> and
-<code>Ctrl-i</code> cannot be bound as they conflict with <em>Enter</em> and <em>Tab</em> respectively.
-Furthermore, ncurses does not allow to distinguish between <code>Ctrl-f</code> and
-<code>Ctrl-F</code>. Finally, <code>Ctrl-z</code> is automatically used for process control and will
-suspend Tig and open a subshell (use <code>fg</code> to reenter Tig).</p>
+<p>Notes</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Tig reads keystrokes via ncurses and is subject to various limitations. See
+<em>ncurses(3x)</em> and <em>terminfo(5)</em> (or termcap).</p>
+</li>
+<li>
+<p><code>Ctrl-m</code> and <code>Ctrl-i</code> cannot be bound as they conflict with <em>Enter</em> and <em>Tab</em>
+respectively.</p>
+</li>
+<li>
+<p>Case differences cannot be distinguished in control sequences such as
+<code>Ctrl-f</code> and <code>Ctrl-F</code>.</p>
+</li>
+<li>
+<p><code>Ctrl-&lt;Space&gt;</code> is typically translated to <code>Ctrl-@</code>, which is available for
+binding.</p>
+</li>
+<li>
+<p>Only some subset of special symbolic keys such as <code>&lt;ShiftTab&gt;</code> will be
+available in any given terminal emulator.</p>
+</li>
+<li>
+<p><code>Ctrl-z</code> is automatically used for process control and will suspend Tig and
+open a subshell (use <code>fg</code> to reenter Tig).</p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Actions</dt>
@@ -1019,6 +1083,9 @@ suspend Tig and open a subshell (use <code>fg</code> to reenter Tig).</p>
 using action names as described in the following sections.</p>
 </dd>
 </dl>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1382,6 +1449,10 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">view-close</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Close the current view</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view-close-no-quit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Close the current view, unless on the last view</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">quit</p></td>
@@ -1857,7 +1928,7 @@ setting the <strong>default</strong> color option.</p>
 </div>
 <div class="paragraph">
 <p><strong>diff-header</strong>, <strong>diff-chunk</strong>, <strong>diff-add</strong>, <strong>diff-add2</strong>, <strong>diff-del</strong>,
-<strong>diff-del2</strong></p>
+<strong>diff-del2</strong>, <strong>diff-add-highlight</strong>, <strong>diff-del-highlight</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1925,10 +1996,17 @@ Characters in the commit title exceeding a predefined width can be highlighted.<
 <p>Source commands make it possible to read additional configuration files.
 Sourced files are included in-place, meaning when a <em>source</em> command is
 encountered the file will be immediately read. Any commands later in the
-current configuration file will take precedence. The syntax is:</p>
+current configuration file will take precedence.</p>
+</div>
+<div class="paragraph">
+<p>If the given path does not exist, tig will proceed with a warning. Give
+the <code>-q</code> parameter to suppress the warning.</p>
+</div>
+<div class="paragraph">
+<p>The syntax is:</p>
 </div>
 <div class="verseblock">
-<pre class="content"><strong>source</strong> <em>path</em></pre>
+<pre class="content"><strong>source</strong> <em>[-q]</em> <em>path</em></pre>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -2007,7 +2085,7 @@ git(7), git-config(1)</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2017-05-06T14:37:09.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.0","time":"2017-05-06T14:51:00.456Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
