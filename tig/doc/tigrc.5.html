@@ -7,7 +7,7 @@
         <title>tigrc(5) · Tig - Text-mode interface for Git</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -296,6 +296,11 @@ annotate your initialization file.</p>
 addition, options can also be toggled with the <code>:toggle</code> prompt command
 or by entering the configuration command into the prompt.</p>
 </div>
+<div class="paragraph">
+<p>In some environments, a user&#x2019;s configuration will be stored in the alternate
+location <code>$XDG_CONFIG_HOME/tig/config</code>.  For brevity, this document will
+refer only to <code>~/.tigrc</code>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -425,7 +430,7 @@ specified in the description.</p>
 <dl>
 <dt class="hdlist1"><em>diff-options</em> (string)</dt>
 <dd>
-<p>A space separated string of diff options to use in the diff view.
+<p>A space-separated string of diff options to use in the diff view.
 git-show(1) is used for formatting and always passes --patch-with-stat.
 This option overrides any options specified in the TIG_DIFF_OPTS
 environment variable (described in manpage:tig[1]), but is itself
@@ -433,27 +438,27 @@ overridden by diff flags given on the command line invocation.</p>
 </dd>
 <dt class="hdlist1"><em>blame-options</em> (string)</dt>
 <dd>
-<p>A space separated string of default blame options. Can be used for
+<p>A space-separated string of default blame options. Can be used for
 telling git-blame(1) how to detect the origin of lines. The options
 are ignored when Tig is started in blame mode and given blame options
 on the command line.</p>
 </dd>
 <dt class="hdlist1"><em>log-options</em> (string)</dt>
 <dd>
-<p>A space separated string of default options that should be passed to the
+<p>A space-separated string of default options that should be passed to the
 git-log(1) command used by the log view. Options can be overridden by
 command line options. Used internally override custom &#x2018;pretty.format&#x2019;
 settings that break the log view.</p>
 </dd>
 <dt class="hdlist1"><em>main-options</em> (string)</dt>
 <dd>
-<p>A space separated string of default options that should be passed to the
+<p>A space-separated string of default options that should be passed to the
 git-log(1) command used by the main view. Options can be overridden by
 command line options.</p>
 </dd>
 <dt class="hdlist1"><em>reference-format</em> (string)</dt>
 <dd>
-<p>A space separated string of format strings used for formatting reference
+<p>A space-separated string of format strings used for formatting reference
 names. Wrap the name of the reference type with the characters you would
 like to use for formatting, e.g. <code>[tag]</code> and <code>&lt;remote&gt;</code>. If no format is
 specified for <code>local-tag</code>, the format for <code>tag</code> is used. Similarly, if no
@@ -490,6 +495,12 @@ Supported reference types are:</p>
 <dd>
 <p>What type of character graphics for line drawing.</p>
 </dd>
+<dt class="hdlist1"><em>truncation-delimiter</em> (mixed) [utf-8|&lt;string&gt;]</dt>
+<dd>
+<p>A single character to draw where columns are truncated. The default is
+&quot;~&quot;.  The special value &quot;utf-8&quot; refers to the character &quot;&#x22EF;&quot;
+(&quot;Midline Horizontal Ellipsis&quot;).</p>
+</dd>
 <dt class="hdlist1"><em>horizontal-scroll</em> (mixed)</dt>
 <dd>
 <p>Interval to scroll horizontally in each step. Can be specified either
@@ -500,7 +511,7 @@ scroll <em>50%</em> of the view width.</p>
 </dd>
 <dt class="hdlist1"><em>git-colors</em> (list)</dt>
 <dd>
-<p>A space separated list of &quot;key=value&quot; pairs where the key is a Git color
+<p>A space-separated list of &quot;key=value&quot; pairs where the key is a Git color
 name and the value is a Tig color name, e.g. &quot;branch.current=main-head&quot;
 and &quot;grep.filename=grep.file&quot;. Set to &quot;no&quot; to disable.</p>
 </dd>
@@ -568,7 +579,13 @@ regions are governed by <code>color diff-add-highlight</code> and
 <p>Ignore space changes in diff view. By default no space changes are
 ignored. Changing this to &quot;all&quot;, &quot;some&quot; or &quot;at-eol&quot; is equivalent to
 passing &quot;--ignore-all-space&quot;, &quot;--ignore-space&quot; or
-&quot;--ignore-space-at-eol&quot; respectively to <code>git diff</code> or <code>git show</code>.</p>
+&quot;--ignore-space-at-eol&quot; respectively to <code>git diff</code> or <code>git show</code>.<br>
+<br>
+<strong>Warning:</strong> when <code>ignore-space</code> is set to <code>some</code>, <code>all</code> or <code>at-eol</code>, then
+the <strong>status-update</strong> and <strong>status-revert</strong> may fail when updating or
+reverting chunks containing lines with space changes. Similarly,
+<strong>stage-update-line</strong> may fail when updating a line adjacent to a line
+with space changes</p>
 </dd>
 <dt class="hdlist1"><em>commit-order</em> (enum) [auto|default|topo|date|author-date|reverse]</dt>
 <dd>
@@ -606,6 +623,11 @@ view when navigating the parent view. True by default.</p>
 <p>Whether to pass the selected line number to the editor command. The
 line number is passed as <code>+&lt;line-number&gt;</code> in front of the file name.
 Example: <code>vim +10 tig.c</code></p>
+</dd>
+<dt class="hdlist1"><em>history-size</em> (int)</dt>
+<dd>
+<p>Size of the persistent <code>~/.tig_history</code> file when compiled with readline
+support. Default is 500. Set to 0 to disable.</p>
 </dd>
 <dt class="hdlist1"><em>mouse</em> (bool)</dt>
 <dd>
@@ -658,7 +680,7 @@ views are refreshed periodically using <em>refresh-interval</em>.</p>
 <h3 id="_view_settings">View settings</h3>
 <div class="paragraph">
 <p>The view settings define the order and options for the different columns of a
-view. Each view setting expects a space separated list of column specifications.
+view. Each view setting expects a space-separated list of column specifications.
 Column specifications starts with the column type, and can optionally be
 followed by a colon (<code>:</code>) and a list of column options. E.g. the following
 column specification defines an <em>author</em> column displaying the author email and
@@ -999,7 +1021,8 @@ built-in keybindings.</p>
 </div>
 <div class="paragraph">
 <p>Keybindings at the line-entry prompt are typically governed by the readline
-library, and are configured separately in <code>~/.inputrc</code>.  See <em>readline(1)</em>.</p>
+library, and are configured separately in <code>~/.inputrc</code>.  See <em>readline(1)</em>.
+Tig respects but does not require an <code>$if tig</code> section in <code>~/.inputrc</code>.</p>
 </div>
 <div class="openblock">
 <div class="content">
@@ -1110,6 +1133,11 @@ the command that should be executed.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Run the command in the background with no output.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run the command synchronously, and echo the first line
+			 of output to the status bar.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">?</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Prompt the user before executing the command.</p></td>
 </tr>
@@ -1198,7 +1226,7 @@ following variable names, which are substituted before commands are run:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(diffargs)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>diff-options</em> or <em>TIG_DIFF_OPTS</em> used
-			 used by the diff and stage view.</p></td>
+			 by the diff and stage view.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(blameargs)</p></td>
@@ -1260,12 +1288,15 @@ following variable names, which are substituted before commands are run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre># Save save the current commit as a patch file when the user selects a
-# commit in the main view and presses &apos;S&apos;.
+<pre># Save the current commit as a patch file when the user selects a commit
+# in the main view and presses &apos;S&apos;.
 bind main S !git format-patch -1 %(commit)
 
 # Create and checkout a new branch; specify custom prompt
-bind main B ?git checkout -b &quot;%(prompt Enter new branch name: )&quot;</pre>
+bind main B ?git checkout -b &quot;%(prompt Enter new branch name: )&quot;
+
+# Show commit statistics for the author under the cursor
+bind main U +sh -c &apos;git --no-pager shortlog -s --author=&quot;$(git show -s --format=%aE %(commit))&quot; &lt;/dev/tty&apos;</pre>
 </div>
 </div>
 </div>
@@ -1452,7 +1483,7 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">view-close-no-quit</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Close the current view, unless on the last view</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Close the current view without quitting</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">quit</p></td>
@@ -1462,7 +1493,7 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 </table>
 </div>
 <div class="sect3">
-<h4 id="_view_specific_actions">View specific actions</h4>
+<h4 id="_view_specific_actions">View-specific actions</h4>
 <table class="tableblock frame-none grid-none spread">
 <colgroup>
 <col style="width: 50%;">
@@ -1675,20 +1706,22 @@ color diff-header	yellow	default
 color diff-index	blue	default
 color diff-chunk	magenta	default
 color &quot;Reported-by:&quot;	green	default
-# View specific color
-color tree.date		black	cyan	bold
---------------------------------------------------------------------------
-
-Or in the Git configuration files:
-// TEST: gitconfig
---------------------------------------------------------------------------
-[tig &quot;color&quot;]
+# View-specific color
+color tree.date		black	cyan	bold</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or in the Git configuration files:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[tig &quot;color&quot;]
 	# A strange looking cursor line
 	cursor		= red	default underline
 	# UI colors
 	title-blur	= white	blue
 	title-focus	= white	blue	bold
-# View specific color
+# View-specific color
 [tig &quot;color.tree&quot;]
 	date		= cyan	default	bold</pre>
 </div>
@@ -1703,7 +1736,7 @@ quoted string.
 Valid built-in area names are described below. Note, all names are
 case-insensitive, and you may use <em>-</em>, and <em>_</em> interchangeably,
 e.g. &quot;Diff-Header&quot; and &quot;DIFF_HEADER&quot; are the same.
-View specific colors can be defined by prefixing the view name to
+View-specific colors can be defined by prefixing the view name to
 the area name, e.g. &quot;stage.diff-chunk&quot; and &quot;diff.diff-chunk&quot;.</p>
 </dd>
 <dt class="hdlist1">Color names</dt>
@@ -2085,7 +2118,7 @@ git(7), git-config(1)</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2017-09-29T15:15:06.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-09-29T17:54:26.766Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

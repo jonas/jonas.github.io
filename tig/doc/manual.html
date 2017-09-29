@@ -7,7 +7,7 @@
         <title>Manual · Tig - Text-mode interface for Git</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -510,7 +510,7 @@ following variables.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(diffargs)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Options from <em>diff-options</em> or <em>TIG_DIFF_OPTS</em> used
-			 used by the diff and stage view.</p></td>
+			 by the diff and stage view.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(blameargs)</p></td>
@@ -651,8 +651,9 @@ environment options.</p>
 <div class="paragraph">
 <p>Upon startup, Tig first reads the system wide configuration file
 (<code>{sysconfdir}/tigrc</code> by default) and then proceeds to read the user&#x2019;s
-configuration file (<code>~/.tigrc</code> by default). The paths to either of these files
-can be overridden through the following environment variables:</p>
+configuration file (<code>~/.tigrc</code> or <code>$XDG_CONFIG_HOME/tig/config</code> by default).
+The paths to either of these files can be overridden through the following
+environment variables:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -705,9 +706,8 @@ the following variable:</p>
 <dl>
 <dt class="hdlist1">TIG_LS_REMOTE</dt>
 <dd>
-<p>Set command for retrieving all repository references. The command
-should output data in the same format as git-ls-remote(1). Defaults
-to:</p>
+<p>Command for retrieving all repository references. The command should
+output data in the same format as git-ls-remote(1). Defaults to:</p>
 </dd>
 </dl>
 </div>
@@ -989,11 +989,11 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one line down.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ScrBack</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ScrollBack</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one page up.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ScrFwd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ScrollFwd</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Scroll view one page down.</p></td>
 </tr>
 <tr>
@@ -1181,6 +1181,10 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">:save-options &lt;file&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Save current options to <code>&lt;file&gt;</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:save-view &lt;file&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save view info to <code>&lt;file&gt;</code> (for testing purposes).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">:script &lt;file&gt;</p></td>
@@ -1465,7 +1469,7 @@ the Free Software Foundation; either version 2 of the License, or
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Manual","level":"1.6","depth":1,"next":{"title":"Screenshots","level":"1.7","depth":1,"url":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","ref":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","articles":[]},"previous":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/manual.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Manual","level":"1.6","depth":1,"next":{"title":"Screenshots","level":"1.7","depth":1,"url":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","ref":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","articles":[]},"previous":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/manual.adoc","mtime":"2017-09-29T15:15:06.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-09-29T17:54:26.766Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

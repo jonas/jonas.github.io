@@ -7,7 +7,7 @@
         <title>tig(1) · Tig - Text-mode interface for Git</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -298,7 +298,7 @@ various Git commands.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Command line options recognized by Tig include all valid git-log(1) and
-git-diff(1) options, as well as the following subcommands and Tig specific
+git-diff(1) options, as well as the following subcommands and Tig-specific
 options. The first command line parameter not starting with &quot;-&quot; is interpreted
 as being either a revision specification or a path and will end the option
 parsing. All additional options will be passed to the underlying Git command.</p>
@@ -531,7 +531,8 @@ See <a href="tigrc.5.html">tigrc(5)</a> for a full list.</p>
 <dl>
 <dt class="hdlist1">TIGRC_USER</dt>
 <dd>
-<p>Path of the user configuration file (defaults to <code>~/.tigrc</code>).</p>
+<p>Path of the user configuration file (defaults to <code>~/.tigrc</code> or
+<code>$XDG_CONFIG_HOME/tig/config</code>).</p>
 </dd>
 <dt class="hdlist1">TIGRC_SYSTEM</dt>
 <dd>
@@ -541,7 +542,7 @@ configuration.</p>
 </dd>
 <dt class="hdlist1">TIG_LS_REMOTE</dt>
 <dd>
-<p>Set command for retrieving all repository references. The command
+<p>Command for retrieving all repository references. The command
 should output data in the same format as git-ls-remote(1).</p>
 </dd>
 <dt class="hdlist1">TIG_DIFF_OPTS</dt>
@@ -575,7 +576,7 @@ to write to /dev/null. The main use is for automated testing of Tig.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">&apos;$XDG_CONFIG_HOME/tig/config</dt>
+<dt class="hdlist1"><em>$XDG_CONFIG_HOME/tig/config</em></dt>
 <dt class="hdlist1"><em>~/.config/tig/config</em></dt>
 <dt class="hdlist1"><em>~/.tigrc</em></dt>
 <dd>
@@ -591,8 +592,8 @@ manpage:tigrc[5] for examples.</p>
 <p>System wide configuration file.</p>
 </dd>
 <dt class="hdlist1"><em>$GIT_DIR/config</em></dt>
-<dt class="hdlist1">&apos;~/.gitconfig</dt>
-<dt class="hdlist1">&apos;/etc/gitconfig</dt>
+<dt class="hdlist1"><em>~/.gitconfig</em></dt>
+<dt class="hdlist1"><em>/etc/gitconfig</em></dt>
 <dd>
 <p>Git configuration files. Read on start-up with the help of
 git-config(1).</p>
@@ -689,7 +690,7 @@ git(7)</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"tig(1)","level":"1.4","depth":1,"next":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"previous":{"title":"Release notes","level":"1.3","depth":1,"path":"NEWS.adoc","ref":"NEWS.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tig.1.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"tig(1)","level":"1.4","depth":1,"next":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"previous":{"title":"Release notes","level":"1.3","depth":1,"path":"NEWS.adoc","ref":"NEWS.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tig.1.adoc","mtime":"2017-09-29T15:15:06.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-09-29T17:54:26.766Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

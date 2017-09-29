@@ -7,7 +7,7 @@
         <title>Testing · Tig - Text-mode interface for Git</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -301,9 +301,19 @@ using <code>make clean all-debug</code> to expose all symbols.</p>
 <dd>
 <p>Show trace information.</p>
 </dd>
+<dt class="hdlist1">todos</dt>
+<dd>
+<p>Run TODO tests, which are otherwise skipped.</p>
+</dd>
 <dt class="hdlist1">valgrind</dt>
 <dd>
 <p>Run tests and verify memory access with Valgrind.</p>
+</dd>
+<dt class="hdlist1">timeout=&lt;int&gt;</dt>
+<dd>
+<p>Set the default timeout for each invocation of tig under the
+test harness. The default is 10 if unset. 0 means &quot;no
+timeout&quot;. Individual tests may override the value.</p>
 </dd>
 </dl>
 </div>
@@ -343,7 +353,7 @@ using <code>make clean all-debug</code> to expose all symbols.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.8.1","depth":2,"previous":{"title":"Developer Documentation","level":"1.8","depth":1,"ref":"","articles":[{"title":"Testing","level":"1.8.1","depth":2,"path":"test/README.adoc","ref":"test/README.adoc","articles":[]}]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"test/README.adoc","mtime":"2017-07-05T14:57:58.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:51:01.611Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.8.1","depth":2,"previous":{"title":"Developer Documentation","level":"1.8","depth":1,"ref":"","articles":[{"title":"Testing","level":"1.8.1","depth":2,"path":"test/README.adoc","ref":"test/README.adoc","articles":[]}]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"test/README.adoc","mtime":"2017-09-29T15:15:06.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-09-29T17:54:26.766Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
