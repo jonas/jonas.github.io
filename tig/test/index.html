@@ -297,6 +297,31 @@ on whether <code>V=1</code> was passed to <code>make</code> to show verbose outp
 program is specified it is auto-detected. Remember to recompile
 using <code>make clean all-debug</code> to expose all symbols.</p>
 </dd>
+<dt class="hdlist1">filter=&lt;file-glob&gt;:&lt;case-glob&gt;</dt>
+<dd>
+<p>Only run test files or cases matching a shell-style glob filter. A
+colon separates the file glob from the case glob.  No colon, or
+trailing colon, is equivalent to trailing <code>:*</code> (all cases). Leading
+colon is equivalent to leading <code>*:</code> (all files).  The file portion
+is matched against a path fragment from the project root.
+Example:</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>	$ TEST_OPTS=&apos;filter=*:*default&apos; make test/tigrc/width-test</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"></dt>
+<dd>
+<p>This option is a convenience for development against specific tests.
+Test files and test cases are filtered, but not assertions.  Thus some
+assertions are expected to fail in the presence of a filter.  Testing
+output originating from <code>make</code> is also not filtered.</p>
+</dd>
 <dt class="hdlist1">trace</dt>
 <dd>
 <p>Show trace information.</p>
@@ -353,7 +378,7 @@ timeout&quot;. Individual tests may override the value.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.8.1","depth":2,"previous":{"title":"Developer Documentation","level":"1.8","depth":1,"ref":"","articles":[{"title":"Testing","level":"1.8.1","depth":2,"path":"test/README.adoc","ref":"test/README.adoc","articles":[]}]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"test/README.adoc","mtime":"2017-09-29T15:15:06.000Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-09-29T17:54:26.766Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.8.1","depth":2,"previous":{"title":"Developer Documentation","level":"1.8","depth":1,"ref":"","articles":[{"title":"Testing","level":"1.8.1","depth":2,"path":"test/README.adoc","ref":"test/README.adoc","articles":[]}]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"test/README.adoc","mtime":"2017-12-15T02:14:51.695Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2017-12-15T02:54:14.710Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
