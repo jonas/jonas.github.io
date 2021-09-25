@@ -336,7 +336,8 @@ setting.</p>
 </dd>
 <dt class="hdlist1"><em>core.editor</em></dt>
 <dd>
-<p>The editor command. Can be overridden by setting GIT_EDITOR.</p>
+<p>The editor command. Can be overridden by setting TIG_EDITOR or
+GIT_EDITOR.</p>
 </dd>
 <dt class="hdlist1"><em>core.worktree</em></dt>
 <dd>
@@ -432,6 +433,7 @@ specified in the description.</p>
 <dd>
 <p>A space-separated string of diff options to use in the diff view.
 git-show(1) is used for formatting and always passes --patch-with-stat.
+Can control display of commit header metadata, passing option --format.
 This option overrides any options specified in the TIG_DIFF_OPTS
 environment variable (described in manpage:tig[1]), but is itself
 overridden by diff flags given on the command line invocation.</p>
@@ -491,9 +493,10 @@ Supported reference types are:</p>
 </ul>
 </div>
 </dd>
-<dt class="hdlist1"><em>line-graphics</em> (mixed) [ascii|default|utf-8|&lt;bool&gt;]</dt>
+<dt class="hdlist1"><em>line-graphics</em> (mixed) [ascii|default|utf-8|auto|&lt;bool&gt;]</dt>
 <dd>
-<p>What type of character graphics for line drawing.</p>
+<p>What type of character graphics for line drawing. &quot;auto&quot; means &quot;utf-8&quot;
+if the locale is UTF-8, &quot;default&quot; otherwise.</p>
 </dd>
 <dt class="hdlist1"><em>truncation-delimiter</em> (mixed) [utf-8|&lt;string&gt;]</dt>
 <dd>
@@ -524,6 +527,10 @@ default.</p>
 <dt class="hdlist1"><em>show-changes</em> (bool)</dt>
 <dd>
 <p>Whether to show staged and unstaged changes in the main view.</p>
+</dd>
+<dt class="hdlist1"><em>show-untracked</em> (bool)</dt>
+<dd>
+<p>Whether to show also untracked changes in the main view.</p>
 </dd>
 <dt class="hdlist1"><em>vertical-split</em> (mixed) [auto|&lt;bool&gt;]</dt>
 <dd>
@@ -618,6 +625,13 @@ Not compatible with line numbers enabled.</p>
 focus will remain in the parent view, avoiding reloads of the child
 view when navigating the parent view. True by default.</p>
 </dd>
+<dt class="hdlist1"><em>send-child-enter</em> (bool)</dt>
+<dd>
+<p>Whether to send &quot;enter&quot; key presses to the child view, even if parent
+view is active. When disabled the child view has to be explicitly
+focused to receive the &quot;enter&quot; key presses. In practice only relevant
+when <code>set focus-child = no</code>. True by default.</p>
+</dd>
 <dt class="hdlist1"><em>editor-line-number</em> (bool)</dt>
 <dd>
 <p>Whether to pass the selected line number to the editor command. The
@@ -649,14 +663,27 @@ mouse wheel. Off by default. Combines well with <code>set mouse-scroll = 1</code
 Mouse support requires that ncurses itself support mouse events and that
 you have enabled mouse support in ~/.tigrc with <code>set mouse = true</code>.</p>
 </dd>
+<dt class="hdlist1"><em>pgrp</em> (bool)</dt>
+<dd>
+<p>Make tig process-group leader when starting and clean all processes
+when exiting. Off by default. Do not enable this option if you are
+using a Zsh version affected by zsh-workers/43379. Run <code>xclip</code> with
+<code>setsid</code> to keep clipboard content after exiting tig. If you are using
+git-credential-cache helper, set option <code>credentialCache.ignoreSIGHUP</code>.</p>
+</dd>
+<dt class="hdlist1"><em>start-on-head</em> (bool)</dt>
+<dd>
+<p>Start with cursor on HEAD commit.</p>
+</dd>
 <dt class="hdlist1"><em>refresh-mode</em> (mixed) [manual|auto|after-command|periodic|&lt;bool&gt;]</dt>
 <dd>
 <p>Configures how views are refreshed based on modifications to watched
 files in the repository. When set to <em>manual</em>, nothing is refreshed
 automatically. When set to <em>auto</em>, views are refreshed when a
-modification is detected. When set to <em>after-command</em> only refresh after
-returning from an external command. When set to <em>periodic</em>, visible
-views are refreshed periodically using <em>refresh-interval</em>.</p>
+modification is detected in another view. When set to <em>after-command</em>
+only refresh after returning from an external command. When set to
+<em>periodic</em>, visible views are refreshed periodically using
+<em>refresh-interval</em>.</p>
 </dd>
 <dt class="hdlist1"><em>refresh-interval</em> (int)</dt>
 <dd>
@@ -684,7 +711,7 @@ view. Each view setting expects a space-separated list of column specifications.
 Column specifications starts with the column type, and can optionally be
 followed by a colon (<code>:</code>) and a list of column options. E.g. the following
 column specification defines an <em>author</em> column displaying the author email and
-with a maximum width of 20 characters: <code>author:email,width=20</code>.</p>
+with a fixed width of 20 characters: <code>author:email,width=20</code>.</p>
 </div>
 <div class="paragraph">
 <p>The first option value in a column specification is always the <em>display</em> option.
@@ -744,9 +771,9 @@ they support:</p>
 <dd>
 <p>file-name, line-number, text</p>
 </dd>
-<dt class="hdlist1">main-view</dt>
+<dt class="hdlist1">main-view, reflog-view</dt>
 <dd>
-<p>author, date, commit-title, id, line-number</p>
+<p>author, date, commit-title, id, line-number, ref</p>
 </dd>
 <dt class="hdlist1">refs-view</dt>
 <dd>
@@ -781,9 +808,15 @@ display author names. If set to &quot;abbreviated&quot; author initials will be
 shown.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the column. When set to a value between 1 and
-10, the author name will be abbreviated to the author&#x2019;s initials.
+<p><em>width</em> (int): Fixed width for the column. When set to a value between
+1 and 10, the author name will be abbreviated to the author&#x2019;s initials.
 When set to zero, the width is automatically sized to fit the content.</p>
+</li>
+<li>
+<p><em>maxwidth</em> (int): Maximum width of the column. Permit automatically
+sizing content, up to this limit. Can be specified either as the number
+of columns, e.g. <em>15</em>, or as a percentage of the view width, e.g. <em>20%</em>,
+where the maximum is 100%.</p>
 </li>
 </ul>
 </div>
@@ -831,8 +864,8 @@ timezone. Note that relative dates always use local offsets.</p>
 display mode has been selected.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the column. When set to zero, the width is
-automatically sized to fit the content.</p>
+<p><em>width</em> (int): Fixed width for the column. When set to zero, the width
+is automatically sized to fit the content.</p>
 </li>
 </ul>
 </div>
@@ -850,6 +883,12 @@ running: tig blame -C &lt;file&gt;.</p>
 <p><em>width</em> (int): Width of the column. When set to zero, the width is
 automatically sized to fit the content.</p>
 </li>
+<li>
+<p><em>maxwidth</em> (int): Maximum width of the column. Permit automatically
+sizing content, up to this limit. Can be specified either as the number
+of columns, e.g. <em>15</em>, or as a percentage of the view width, e.g. <em>20%</em>,
+where the maximum is 100%.</p>
+</li>
 </ul>
 </div>
 </dd>
@@ -863,8 +902,8 @@ When set to &quot;units&quot;, sizes are shown using binary prefixes, e.g. 12524
 bytes is shown as &quot;12.2K&quot;.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the filename column. When set to zero, the
-width is automatically sized to fit the content.</p>
+<p><em>width</em> (int): Fixed width for the filename column. When set to zero,
+the width is automatically sized to fit the content.</p>
 </li>
 </ul>
 </div>
@@ -877,10 +916,10 @@ width is automatically sized to fit the content.</p>
 <p><em>display</em> (bool): Whether to show commit IDs in the main view.</p>
 </li>
 <li>
-<p><em>width</em> (int) : Width of the commit ID. When unset Tig will use the
-value of <em>core.abbrev</em> if found. See git-config(1) on how to set
-<em>core.abbrev</em>. When set to zero the width is automatically sized to
-fit the content of reflog (e.g.  <code>ref/stash@{4}</code>) IDs and otherwise
+<p><em>width</em> (int) : Fixed width for the commit ID column. When unset Tig
+will use the value of <em>core.abbrev</em> if found. See git-config(1) on how
+to set <em>core.abbrev</em>. When set to zero the width is automatically sized
+to fit the content of reflog (e.g.  <code>ref/stash@{4}</code>) IDs and otherwise
 default to 7.</p>
 </li>
 </ul>
@@ -897,8 +936,8 @@ default to 7.</p>
 <p><em>interval</em> (int): Interval between line numbers.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the column. When set to zero, the width is
-automatically sized to fit the content.</p>
+<p><em>width</em> (int): Fixed width for the column. When set to zero, the width
+is automatically sized to fit the content.</p>
 </li>
 </ul>
 </div>
@@ -911,8 +950,8 @@ automatically sized to fit the content.</p>
 <p><em>display</em> (bool): Whether to show file modes.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the column. When set to zero, the width is
-automatically sized to fit the content.</p>
+<p><em>width</em> (int): Fixed width for the column. When set to zero, the width
+is automatically sized to fit the content.</p>
 </li>
 </ul>
 </div>
@@ -925,8 +964,14 @@ automatically sized to fit the content.</p>
 <p><em>display</em> (bool): Whether to show the reference name.</p>
 </li>
 <li>
-<p><em>width</em> (int): Width of the column. When set to zero, the width is
-automatically sized to fit the content.</p>
+<p><em>width</em> (int): Fixed width for the column. When set to zero, the width
+is automatically sized to fit the content.</p>
+</li>
+<li>
+<p><em>maxwidth</em> (int): Maximum width of the column. Permit automatically
+sizing content, up to this limit. Can be specified either as the number
+of columns, e.g. <em>15</em>, or as a percentage of the view width, e.g. <em>20%</em>,
+where the maximum is 100%.</p>
 </li>
 </ul>
 </div>
@@ -1030,10 +1075,10 @@ Tig respects but does not require an <code>$if tig</code> section in <code>~/.in
 <dl>
 <dt class="hdlist1">Keymaps</dt>
 <dd>
-<p>Valid keymaps are: <strong>main</strong>, <strong>diff</strong>, <strong>log</strong>, <strong>help</strong>, <strong>pager</strong>, <strong>status</strong>, <strong>stage</strong>,
-<strong>tree</strong>, <strong>blob</strong>, <strong>blame</strong>, <strong>refs</strong>, <strong>stash</strong>, <strong>grep</strong> and <strong>generic</strong>. Use <strong>generic</strong>
-to set key mapping in all keymaps. Use <strong>search</strong> to define keys for navigating
-search results during search.</p>
+<p>Valid keymaps are: <strong>main</strong>, <strong>diff</strong>, <strong>log</strong>, <strong>reflog</strong>, <strong>help</strong>, <strong>pager</strong>, <strong>status</strong>,
+<strong>stage</strong>, <strong>tree</strong>, <strong>blob</strong>, <strong>blame</strong>, <strong>refs</strong>, <strong>stash</strong>, <strong>grep</strong> and <strong>generic</strong>. Use
+<strong>generic</strong> to set key mapping in all keymaps. Use <strong>search</strong> to define keys for
+navigating search results during search.</p>
 </dd>
 <dt class="hdlist1">Key values</dt>
 <dd>
@@ -1051,7 +1096,8 @@ bind to the <code>&lt;</code> key.</p>
 <strong>&lt;Hash&gt;</strong>, <strong>&lt;LessThan&gt;</strong> or <strong>&lt;LT&gt;</strong>, <strong>&lt;Home&gt;</strong>, <strong>&lt;End&gt;</strong>, <strong>&lt;PageUp&gt;</strong> or <strong>&lt;PgUp&gt;</strong>,
 <strong>&lt;PageDown&gt;</strong> or <strong>&lt;PgDown&gt;</strong>, <strong>&lt;ScrollBack&gt;</strong> or <strong>&lt;SBack&gt;</strong>, <strong>&lt;ScrollFwd&gt;</strong> or
 <strong>&lt;SFwd&gt;</strong>, <strong>&lt;ShiftTab&gt;</strong> or <strong>&lt;BackTab&gt;</strong>, <strong>&lt;ShiftLeft&gt;</strong>, <strong>&lt;ShiftRight&gt;</strong>,
-<strong>&lt;ShiftDelete&gt;</strong> or <strong>&lt;ShiftDel&gt;</strong>, <strong>&lt;ShiftHome&gt;</strong>, <strong>&lt;ShiftEnd&gt;</strong>, <strong>&lt;F1&gt;</strong> &#x2026;&#x200B; <strong>&lt;F19&gt;</strong></p>
+<strong>&lt;ShiftDelete&gt;</strong> or <strong>&lt;ShiftDel&gt;</strong>, <strong>&lt;ShiftHome&gt;</strong>, <strong>&lt;ShiftEnd&gt;</strong>, <strong>&lt;SingleQuote&gt;</strong>,
+<strong>&lt;DoubleQuote&gt;</strong>, <strong>&lt;F1&gt;</strong> &#x2026;&#x200B; <strong>&lt;F19&gt;</strong></p>
 </div>
 <div class="paragraph">
 <p>To define key mappings with the <code>Ctrl</code> key, use <code>&lt;Ctrl-key&gt;</code>. In addition, key
@@ -1145,6 +1191,11 @@ the command that should be executed.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&lt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Exit Tig after executing the command.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Re-open Tig instantly in the last displayed view after
+			 executing the command.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -1152,6 +1203,10 @@ the command that should be executed.</p>
 console output shown (as if <em>!</em> was specified). When multiple command options
 are specified their behavior are combined, e.g. &quot;?&lt;git commit&quot; will prompt the
 user whether to execute the command and will exit Tig after completion.</p>
+</div>
+<div class="paragraph">
+<p>Note that if you want to use pipes or redirection in your commands then you
+must run them in a subshell, i.e. embed your commands in <code>sh -c &apos;&lt;commands&gt;&apos;</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="_browsing_state_variables">Browsing state variables</h4>
@@ -1191,6 +1246,11 @@ following variable names, which are substituted before commands are run:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected tag name.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(refname)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected reference name including the
+			 remote name for remote branches.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(stash)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected stash name.</p></td>
 </tr>
@@ -1206,6 +1266,11 @@ following variable names, which are substituted before commands are run:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(lineno)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected line number. Defaults to 0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(lineno_old)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected line number, before the diff
+			 was applied. Defaults to 0.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(ref)</p></td>
@@ -1277,6 +1342,10 @@ following variable names, which are substituted before commands are run:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The path to the Git directory, e.g. <code>/src/repo/.git</code>.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:worktree)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The worktree path, if defined.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:is-inside-work-tree)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Whether Tig is running inside a work tree,
 			 either <code>true</code> or <code>false</code>.</p></td>
@@ -1325,8 +1394,7 @@ file:</p>
 	gitk-bg = !&quot;gitk HEAD --not $(git rev-parse --remotes) &amp;&quot;
 	publish = !&quot;for i in origin public; do git push $i; done&quot;
 [tig &quot;bind&quot;]
-	# @-prefix means that the console output will not be shown.
-	generic = V !@git gitk-bg
+	generic = V @git gitk-bg
 	generic = &gt; !git publish</pre>
 </div>
 </div>
@@ -1393,6 +1461,10 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">view-log</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Show log view</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view-reflog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show reflog view</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">view-tree</p></td>
@@ -1517,6 +1589,10 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 <td class="tableblock halign-left valign-top"><p class="tableblock">Stage/unstage single line</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">stage-update-part</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stage/unstage part of a chunk</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">stage-split-chunk</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Split current diff chunk</p></td>
 </tr>
@@ -1540,20 +1616,20 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one line down</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">move-page-up</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page up</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">move-page-down</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page down</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">move-page-up</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">move-half-page-up</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor half a page up</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">move-half-page-down</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor half a page down</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">move-half-page-up</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page up</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">move-first-line</p></td>
@@ -1597,6 +1673,14 @@ case-insensitive, and you may use <em>-</em>, <em>_</em>, and <em>.</em> interch
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">scroll-page-down</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Scroll one page down</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scroll-half-page-up</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll half a page up</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scroll-half-page-down</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scroll half a page down</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">scroll-first-col</p></td>
@@ -1875,6 +1959,10 @@ setting the <strong>default</strong> color option.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The commit comment.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">main-annotated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The commit comment of an annotated commit.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">main-head</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Label of the current branch.</p></td>
 </tr>
@@ -1960,8 +2048,8 @@ setting the <strong>default</strong> color option.</p>
 </dl>
 </div>
 <div class="paragraph">
-<p><strong>diff-header</strong>, <strong>diff-chunk</strong>, <strong>diff-add</strong>, <strong>diff-add2</strong>, <strong>diff-del</strong>,
-<strong>diff-del2</strong>, <strong>diff-add-highlight</strong>, <strong>diff-del-highlight</strong></p>
+<p><strong>diff-header</strong>, <strong>diff-chunk</strong>, <strong>diff-stat</strong>, <strong>diff-add</strong>, <strong>diff-add2</strong>,
+<strong>diff-del</strong>, <strong>diff-del2</strong>, <strong>diff-add-highlight</strong>, <strong>diff-del-highlight</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2118,7 +2206,7 @@ git(7), git-config(1)</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2017-12-14T03:20:42.511Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2018-01-31T01:23:55.780Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"tigrc(5)","level":"1.5","depth":1,"next":{"title":"Manual","level":"1.6","depth":1,"path":"doc/manual.adoc","ref":"doc/manual.adoc","articles":[]},"previous":{"title":"tig(1)","level":"1.4","depth":1,"path":"doc/tig.1.adoc","ref":"doc/tig.1.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tigrc.5.adoc","mtime":"2021-09-25T07:55:16.029Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2021-09-25T08:06:50.380Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2126,10 +2214,6 @@ git(7), git-config(1)</p>
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

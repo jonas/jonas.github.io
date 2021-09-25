@@ -370,6 +370,11 @@ repository references, such as tags, will be shown.</p>
 <p>Presents a more rich view of the revision log showing the whole log
 message and the diffstat.</p>
 </dd>
+<dt class="hdlist1">The reflog view</dt>
+<dd>
+<p>Presents a view of the reflog allowing to navigate the repo
+history.</p>
+</dd>
 <dt class="hdlist1">The diff view</dt>
 <dd>
 <p>Shows either the diff of the current working tree, that is, what
@@ -475,6 +480,11 @@ following variables.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected tag name.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(refname)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected reference name including the
+			 remote name for remote branches.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(stash)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected stash name.</p></td>
 </tr>
@@ -490,6 +500,11 @@ following variables.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(lineno)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected line number. Defaults to 0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(lineno_old)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currently selected line number, before the diff
+			 was applied. Defaults to 0.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(ref)</p></td>
@@ -561,6 +576,10 @@ following variables.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The path to the Git directory, e.g. <code>/src/repo/.git</code>.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:worktree)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The worktree path, if defined.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">%(repo:is-inside-work-tree)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Whether Tig is running inside a work tree,
 			 either <code>true</code> or <code>false</code>.</p></td>
@@ -584,7 +603,7 @@ following variables.</p>
 <p>Copy commit ID to clipboard:</p>
 <div class="literalblock">
 <div class="content">
-<pre>bind generic 9 !@sh -c &quot;echo -n %(commit) | xclip -selection c&quot;</pre>
+<pre>bind generic 9 @sh -c &quot;echo -n %(commit) | xclip -selection c&quot;</pre>
 </div>
 </div>
 </li>
@@ -667,10 +686,9 @@ environment variables:</p>
 </dd>
 </dl>
 </div>
-<div id="history-files" class="paragraph">
-<p>History Files
-<sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub>~</p>
 </div>
+<div class="sect2">
+<h3 id="history-files">History Files</h3>
 <div class="paragraph">
 <p>If compiled with readline support, Tig writes a persistent command and search
 history to <code>~/.tig_history</code> or <code>$XDG_DATA_HOME/tig/history</code>.</p>
@@ -853,12 +871,12 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Up</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">This key is &quot;context sensitive&quot; and will move the cursor one
-	line up. However, if you opened a diff view from the main view
-	(split- or full-screen) it will change the cursor to point to
-	the previous commit in the main view and update the diff view
-	to display it. If you prefer this key to move the cursor or
-	scroll within the diff view instead, use <code>bind diff &lt;Up&gt; move-up</code>
-	or <code>bind diff &lt;Up&gt; scroll-line-up</code>, respectively.</p></td>
+	line up. However, if you opened a split view it will change the
+	cursor to point to the previous commit in the parent view and
+	update the child view to display it. If you prefer this key to
+	move the cursor or scroll within the diff view instead,
+	use <code>bind diff &lt;Up&gt; move-up</code> or <code>bind diff &lt;Up&gt; scroll-line-up</code>,
+	respectively.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Down</p></td>
@@ -948,7 +966,7 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one line down.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PgUp,-,a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PgUp, -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page up.</p></td>
 </tr>
 <tr>
@@ -956,12 +974,12 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Move cursor one page down.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">End</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to last line.</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Home</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Jump to first line.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">End</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jump to last line.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1120,6 +1138,10 @@ you prefer to have commit and author dates shown as relative dates, use:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">$</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Toggle highlighting of commit title overflow.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">H</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Go to the HEAD commit.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">:</p></td>
@@ -1469,7 +1491,7 @@ the Free Software Foundation; either version 2 of the License, or
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Manual","level":"1.6","depth":1,"next":{"title":"Screenshots","level":"1.7","depth":1,"url":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","ref":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","articles":[]},"previous":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/manual.adoc","mtime":"2017-12-14T03:16:50.546Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2018-01-31T01:23:55.780Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Manual","level":"1.6","depth":1,"next":{"title":"Screenshots","level":"1.7","depth":1,"url":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","ref":"https://www.flickr.com/photos/jonasfonseca/albums/72157614470764617","articles":[]},"previous":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/manual.adoc","mtime":"2021-09-25T07:55:16.029Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2021-09-25T08:06:50.380Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -1477,10 +1499,6 @@ the Free Software Foundation; either version 2 of the License, or
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

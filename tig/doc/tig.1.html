@@ -273,10 +273,11 @@
 <pre class="content">tig        [options] [revisions] [--] [paths]
 tig log    [options] [revisions] [--] [paths]
 tig show   [options] [revisions] [--] [paths]
+tig reflog [options] [revisions]
 tig blame  [options] [rev] [--] path
 tig grep   [options] [pattern]
-tig refs
-tig stash
+tig refs   [options]
+tig stash  [options]
 tig status
 tig &lt;      [Git command output]</pre>
 </div>
@@ -323,6 +324,10 @@ Optionally limited from given revision.</p>
 <dd>
 <p>Start up in log view, displaying git-log(1) output.</p>
 </dd>
+<dt class="hdlist1">reflog</dt>
+<dd>
+<p>Start up in reflog view.</p>
+</dd>
 <dt class="hdlist1">refs</dt>
 <dd>
 <p>Start up in refs view.</p>
@@ -346,6 +351,10 @@ Optionally limited from given revision.</p>
 <dt class="hdlist1">-h, --help</dt>
 <dd>
 <p>Show help message and exit.</p>
+</dd>
+<dt class="hdlist1">-C &lt;path&gt;</dt>
+<dd>
+<p>Run as if Tig was started in &lt;path&gt; instead of the current working directory.</p>
 </dd>
 </dl>
 </div>
@@ -515,6 +524,14 @@ the log and diff views. For example:</p>
 <pre>$ tig refs</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Use word diff in the diff view:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tig --word-diff=plain</pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -561,11 +578,22 @@ may also set the <code>diff-options</code> setting in the configuration file.</p
 environment variable is defined to the empty string, the script is read
 from stdin. The script is interpreted line-by-line and can contain
 prompt commands and key mappings.</p>
+<div class="literalblock">
+<div class="content">
+<pre>E.g. TIG_SCRIPT=&lt;(echo :set main-view-commit-title-graph = no) tig</pre>
+</div>
+</div>
 </dd>
 <dt class="hdlist1">TIG_NO_DISPLAY</dt>
 <dd>
 <p>Open Tig without rendering anything to the terminal. This force Ncurses
 to write to /dev/null. The main use is for automated testing of Tig.</p>
+</dd>
+<dt class="hdlist1">TIG_EDITOR</dt>
+<dd>
+<p>The editor command to use when visiting files. This environment
+variable overrides $GIT_EDITOR, $EDITOR and $VISUAL, so it allows
+to use a different editor from the one Git uses.</p>
 </dd>
 </dl>
 </div>
@@ -690,7 +718,7 @@ git(7)</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"tig(1)","level":"1.4","depth":1,"next":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"previous":{"title":"Release notes","level":"1.3","depth":1,"path":"NEWS.adoc","ref":"NEWS.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":["ga"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-7492166-1"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tig.1.adoc","mtime":"2017-12-15T02:14:51.692Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2018-01-31T01:23:55.780Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"tig(1)","level":"1.4","depth":1,"next":{"title":"tigrc(5)","level":"1.5","depth":1,"path":"doc/tigrc.5.adoc","ref":"doc/tigrc.5.adoc","articles":[]},"previous":{"title":"Release notes","level":"1.3","depth":1,"path":"NEWS.adoc","ref":"NEWS.adoc","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.adoc","glossary":"GLOSSARY.md","summary":"book.md"},"variables":{},"title":"Tig - Text-mode interface for Git","links":{"sharing":{"twitter":false,"facebook":false,"google":false,"all":false}},"gitbook":"3.2.x"},"file":{"path":"doc/tig.1.adoc","mtime":"2021-09-25T07:55:16.029Z","type":"asciidoc"},"gitbook":{"version":"3.2.3","time":"2021-09-25T08:06:50.380Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -698,10 +726,6 @@ git(7)</p>
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
